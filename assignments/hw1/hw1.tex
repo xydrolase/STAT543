@@ -1,0 +1,105 @@
+\documentclass[letterpaper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{titlesec}
+\usepackage{enumerate}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhead[L]{STAT 543 HW1}
+\fancyhead[R]{Xin Yin}
+\titleformat{\section}{\em\Large} {$\dagger$ \thesection .}{10pt}{}
+
+\newcommand{\bx}{\mathbf{x}}
+\newcommand{\bX}{\mathbf{X}}
+\newcommand{\Tx}{\mathbf{T(x)}}
+\newcommand{\TX}{\mathbf{T(X)}}
+
+\begin{document}
+    \section{}
+        Given that $X_1, X_2, X_3$ are random sample from Ber$(\theta)$, we have that
+        \[
+        f(x_i|\theta) = \theta^{x_i} (1-\theta)^{1-x_i}, \quad i = 1, 2, 3
+        \]
+        and that,
+        \[
+        f(\bx|\theta) = \prod_i \theta^{x_i} (1-\theta)^{1-x_i} = \theta^{\sum_i x_i} (1-\theta)^{\sum_i (1-x_i)}.
+        \]
+
+        Now, by definition, if $T = X_1 + 2 X_2 + X_3$ is a sufficient statistic for $\theta$, $P(\bX = \bx|\TX=\Tx)$ should be independent of $\theta$. However, we can show that,
+        \begin{align*}
+        P(\bX = (0, 1, 0)|\TX = 2) & = \frac{P(\bX = (0, 1, 0)}{P(\TX = 2)} \\
+        & = \frac{P(\bX = (0, 1, 0)}{P(\bX \in \{(1, 0, 1), (0, 1, 0)\})} \\
+        & = \frac{\theta (1-\theta)^2}{\theta(1-\theta)^2 + \theta^2(1-\theta)} \\
+        & = \frac{(1-\theta)^2}{(1-\theta)^2 + \theta(1-\theta)},
+        \end{align*}
+        which is not independent of $\theta$. Thus, $\TX = X_1 + 2X_2 + X_3$ is not a sufficient statistic of $\theta$.
+
+    \section{}
+        Given the pdf,
+        \[
+        f_{X_i}(x|\theta) = \begin{cases}
+            e^{i\theta-x} & x \ge i\theta \\
+            0   & x < i\theta
+        \end{cases}
+        \]
+        We can write down the likelihood as, given the independence of $X_1, \dots, X_n$,
+        \[
+        f(\bx|\theta) = \prod_{i=1}^n e^{i\theta-x_i} I(x_i \ge i\theta) 
+        = e^{\theta \sum_{i=1}^n i} I(\min_{i}(X_i/i) \ge \theta) \cdot e^{-\sum_{i=1}^n x_i},
+        \]
+        which factorized into $g(\Tx|\theta) = e^{\theta \sum_{i=1}^n i} I(\min_{i}(X_i/i) \ge \theta)$ where $T = \min_{i} (X_i/i)$, and $g(x) = e^{-\sum_{i=1}^n x_i}$. Therefore, $T = \min_{i} (X_i/i)$ is a sufficient statistic for $\theta$.
+    \section{}
+        The likelihood for pdf $f(x|\mu, \sigma) = \frac{1}{\sigma} e^{-(x-\mu)/\sigma}, \mu < x < \infty$ is,
+        \[
+        f(\bx|\theta) = \prod_{i=1}^n \frac{1}{\sigma} e^{-(x_i - \mu)/\sigma} I(x_i > \mu) = \left(\frac{e^{\mu/\sigma}}{\sigma}\right)^n e^{-\cfrac{\sum_{i=1}^n x_i}{\sigma}} I(X_{(1)} > \mu) \cdot 1,
+        \]
+        which can be factorized into $g(\Tx|\theta) = \left(\frac{e^{\mu/\sigma}}{\sigma}\right)^n e^{-\cfrac{\sum_{i=1}^n x_i}{\sigma}} I(X_{(1)} > \mu)$ and $h(x) = 1$. 
+        So, $(X_{(1)}, \sum_{i=1}^n X_i)$ is a sufficient statistic for $(\mu, \sigma)$.
+    \section{}
+        Given that $X_1, \dots, X_n$ are random samples from Uniform$(\theta, 2\theta)$ distribution, the likelihood can be written down as,
+        \[
+        f(\bx|\theta) = \prod_{i=1}^n \frac{1}{\theta} I(\theta < x < 2\theta) = \frac{1}{\theta^n} I(\frac{X_{(n)}}{2} < \theta < X_{(1)}) \cdot 1,
+        \]
+        which factorize into $g(\Tx|\theta) = \frac{1}{\theta^n} I(\frac{X_{(n)}}{2} < \theta < X_{(1)})$, and $h(x) = 1$. Therefore, $(X_(1), X_(n))$ is a sufficient statistic for $\theta$.
+        \section{}
+        Given that $X_1, \dots, X_n$ are random samples from discrete uniform distribution on $1, 2, \dots, \theta$, we know that,
+        \begin{eqnarray*}
+        f(x|\theta) = \frac{1}{\theta}I(x \in \mathcal{N}_\theta),
+        F(X|\theta) = \frac{x}{\theta}I(x \in \mathcal{N}_\theta),
+        \end{eqnarray*}
+        where $\mathcal{N}_\theta = \{1, 2, \dots, \theta\}$.
+
+        Then, the distribution for $T = X_{(n)}$ is,
+        \begin{align*}
+        q(\Tx|\theta) & = \frac{n!}{(n-1)!} f_{\Tx}(x|\theta) [F_{\Tx}(x|\theta)]^{n-1} [1-F(x|\theta)]^0 \\
+        & = \frac{n}{\theta} \left(\frac{\Tx}{\theta}\right)^{n-1} I\left(\Tx \in \mathcal{N}_\theta\right) \\
+        & = \frac{n}{\theta^n} \Tx^{n-1} I\left(\Tx \in \mathcal{N}_\theta\right)
+        \end{align*}
+        And the likelihood for the joint pmf is,
+        \[
+        p(\bx|\theta) = \prod_{i=1}^n \frac{1}{\theta} I(x_i \in \mathcal{N}_\theta) = \frac{1}{\theta^n} I(\Tx \in \mathcal{N}_\theta) \left(\prod_{i=1}^n I(x_i \in \mathcal{N})\right),
+        \]
+        where $\Tx = X_{(n)}$,  and $\mathcal{N} = \{1, 2, \dots\}$.
+
+        By definition, $\Tx$ will be a sufficient statistic if $P(\bX = \bx|\TX = \Tx)$ is independent of $\theta$. And,
+        \[
+        P(\bX = \bx|\TX = \Tx) = \frac{p(\bx|\theta)}{q(\Tx|\theta)} = \cfrac{\frac{1}{\theta^n} I(\Tx \in \mathcal{N}_\theta) \left(\prod_{i=1}^n I(x_i \in \mathcal{N})\right)}{\frac{n}{\theta^n} \Tx^{n-1} I\left(\Tx \in \mathcal{N}_\theta\right)} = \cfrac{\prod_{i=1}^n I(x_i \in \mathcal{N})}{n \Tx^{n-1}},
+        \]
+        is independent of $\theta$. Therefore, $\Tx = X_{(n)}$ is a sufficient statistic for $\theta$.
+        \section{}
+        \begin{enumerate}[(a)]
+        \item 
+        If $\TX = X_1 + X_2$ is a sufficient statistic, by definition, the conditional probability $P(\bX = \bx|\TX = \Tx)$ should be independent of $p$. However,
+        \begin{align*}
+        P(\bX = (0, 1)|\TX = 1) & = \frac{P(X_1 = 0, X_2 = 1)}{P(\TX = 1)} \\
+        & = \frac{(1-p)5p}{(1-p)5p + p(1-5p)} = \frac{5(1-p)}{5(1-p) + (1-5p)},
+        \end{align*}
+        is not independent of $p$. Thus, $\TX = X_1 + X_2$ is not a sufficient statistic of $p$.
+
+        \item
+        Since $\TX = X_1 + 3X_2$ has a one-to-one mapping from $(X_1, X_2)$ to $X_1 + 3X_2$, we have that $f_{X_1+3X_2}(\Tx|p) = f(x_1, x_2|p)$. 
+
+        Then, $\frac{p(\bx|p)}{q(\Tx|\theta)}$ will remain as a constant and thus independent of $p$. So, $X_1 + 3X_2$ is a sufficient statistic for $p$.
+        \end{enumerate}
+\end{document}

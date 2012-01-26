@@ -1,0 +1,101 @@
+\documentclass[letterpaper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{titlesec}
+\usepackage{enumerate}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhead[L]{STAT 543 HW2}
+\fancyhead[R]{Xin Yin}
+
+\newcommand{\bx}{\mathbf{x}}
+\newcommand{\by}{\mathbf{y}}
+\newcommand{\bX}{\mathbf{X}}
+\newcommand{\Tx}{\mathbf{T(x)}}
+\newcommand{\TX}{\mathbf{T(X)}}
+
+\begin{document}
+    \section*{6.19}
+    For a distribution family to be complete, if must satisfy that $E_\theta(g(X)) = 0 \implies g(X) \equiv 0$ for all $\theta$.
+    \begin{enumerate}[(a)]
+    \item For distribution family 1, 
+    \[
+    E(g(X)) = p g(0) + 3p g(1) + (1 - 4p)g(2) = 0 \implies p(g(0) + 3g(1) - 4g(2)) + g(2) = 0,
+    \]
+    of which $g(0) + 3g(1) = 0$ and $g(2) = 0$ qualify as a solution. 
+
+    But since $P(g(X) = 0) \ne 1$ for $X = 0, 1$, this distribution family is not complete.
+    \item For distribution family 2,
+    \[
+    E(g(X)) = pg(0) + p^2 g(1) + (1-p-p^2)g(2) = 0 \implies p[g(0)-g(2)] + p^2[g(1) - g(2)] + g(2) = 0.
+    \]
+    Since $p > 0$, if $E(g(X)) = 0$ for all $p$, it must be that $g(0) = g(1) = g(2) = 0$. Hence, this distribution family is complete.
+
+    \end{enumerate}
+    \section*{6.20(e)}
+    \begin{eqnarray*}
+    f(x|\theta) = \binom{2}{x} \theta^x (1-\theta)^{2-x} \\
+    = \binom{2}{x} \exp\left\{\log(\theta) x + \log(1-\theta) (2-x) \right\},
+    \end{eqnarray*}
+    Clearly, we can see that $f(x|\theta)$ belongs to exponential family, with 
+    \begin{eqnarray*} 
+    h(x) = \binom{2}{x}, c(\theta) = 1, \\
+    w_1(\theta) = \log(\theta), t_1(x) = x, \\
+    w_2(\theta) = \log(1-\theta), t_2(x) = 2-x.
+    \end{eqnarray*}
+    Using Theorem 6.2.25, we know that,
+    \[
+    \TX = \left(\sum_{i=1}^n x, \sum_{i=1}^n (2-x)\right),
+    \]
+    is a complete sufficient statisitic.
+
+    \section*{6.21}
+    \begin{enumerate}
+    \item Since $X$ is the single observation, $X$ itself, as a statistic, is the complete data. Therefore, $X$ is sufficient.
+    Now, if
+    \[
+    E_\theta(g(T)) = E_\theta(g(X)) = g(-1) \frac{\theta}{2} + (1-\theta) g(0) + g(1) \frac{\theta}{2} = 0,
+    \]
+    $g(-1) = -g(1)$ and $g(0) = 0$ will qualify but $g(X)$ is not necessarily 0. Therefore, $X$ is not complete.
+
+    \item Since $f(x|\theta)$ depends on $\theta$ only through $|X|$, by theorem, $|X|$ is sufficient.
+    To check if $|X|$ is complete, 
+    \[
+    E_\theta(g(|X|)) = g(0) (1-\theta) + 2 g(1) \frac{\theta}{2} = 0 \implies g(0) = g(1) = 0 ~\text{for all}~ \theta
+    \]
+    \emph{i.e.} $P(g(|X|) = 0) = 1$. Hence, $|X|$ is complete sufficient.
+
+    \item We can easily rearrange the terms of $f(x|\theta)$ into,
+    \[
+    f(x|\theta) = \exp\left\{\log\left(\frac{\theta}{2}\right) |x| + \log(1-\theta) (1-|x|)\right\}.
+    \]
+    Therefore, yes, $f(x|\theta)$ belongs to the exponential family.
+    \end{enumerate}
+    \section*{6.22}
+    \begin{enumerate}
+    \item Since $X_1, \dots, X_n$ is a random sample from $f(x|\theta)$, the joint pdf is, 
+    \[
+    f(\bx|\theta) = \theta^n \left(\prod_{i=1}^n x_i\right)^{\theta -1},
+    \]
+    which depends on $\theta$ only through $\prod_{i=1}^n x_i$. Therefore, $\prod_{i=1}^n x_i$ is a sufficient statistic.
+
+    We can also show that the ratio $\frac{f(\bx|\theta)}{f(\by|\theta)}$ is,
+    \[
+    \frac{\theta^n \left(\prod_{i=1}^n x_i\right)^{\theta -1}}{\theta^n \left(\prod_{i=1}^n y_i\right)^{\theta -1}} = 
+    \left(\frac{\prod_{i=1}^n x_i}{\prod_{i=1}^n y_i}\right)^{\theta -1}.
+    \]
+    Clearly, this ratio is constant as a function of $\theta$, only if $\prod_{i=1}^n x_i = \prod_{i=1}^n y_i$, \emph{i.e.} $T(\bx) = T(\by)$. 
+    Therefore, $\TX = \prod_{i=1}^n x_i$ is a minimal sufficient statistic.
+
+    Now, if $T'(\bx) = \sum_{i=1}^n x_i$ is also a sufficient statistic, by definition, $T(\bx)$ should be a function of $T'(\bx)$. Obviously, there's no such function $g(\cdot)$ satisfying $T(\bx) = g(T'(\bx))$. Therefore, $\sum_{i=1}^n x_i$ is not a sufficient statistic.
+    \item It can be easily shown that $f(x|\theta)$ belongs to the exponential family, because,
+    \[
+    f(x|\theta) = \theta \exp(\log(x) (\theta-1)).
+    \]
+    By theorem, $\sum_{i=1}^n \log(x_i)$ is a complete sufficient statistic. Also, since $\prod_{i=1}^n x_i = \exp\left(\sum_{i=1}^n \log(x_i)\right)$, $\prod_{i=1}^n x_i$ is also complete.
+    \end{enumerate}
+
+    \section*{6.24}
+
+\end{document}
