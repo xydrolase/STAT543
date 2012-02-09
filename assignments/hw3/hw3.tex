@@ -1,0 +1,159 @@
+\documentclass[letterpaper]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{titlesec}
+\usepackage{enumerate}
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+\fancyhead[L]{STAT 543 HW3}
+\fancyhead[R]{Xin Yin}
+
+\newcommand{\bx}{\mathbf{x}}
+\newcommand{\by}{\mathbf{y}}
+\newcommand{\bX}{\mathbf{X}}
+\newcommand{\Tx}{\mathbf{T(x)}}
+\newcommand{\TX}{\mathbf{T(X)}}
+
+\begin{document}
+    \section*{Problem 1}
+    If $X_1, \dotsc, X_n$ are random sample from a Gamma$(\alpha, \beta)$, the first two sample moments are,
+    \[
+    m_1 = \bar X, \qquad m_2 = \frac{1}{n} \sum_{i=1}^n X_i^2
+    \]
+    To get the MoM estimators, solve following equations,
+    \[
+    \bar X = \mu_1 = \alpha \beta, \qquad \frac{1}{n} \sum_{i=1}^n X_i^2 = \mu_2 = \alpha \beta^2 + \alpha^2\beta^2,
+    \]
+    and we can get,
+    \begin{eqnarray*}
+    \tilde \alpha = \frac{\bar X^2}{\frac{1}{n} \sum_{i} X_i^2 - \bar X^2}\\
+    \tilde \beta = \frac{\frac{1}{n} \sum_{i} X_i^2 - \bar X^2}{\bar X}\\
+    \end{eqnarray*}
+    
+    \section*{7.7}
+    Given that $X_1, \dotsc, X_n$ are random sample from 
+    \[
+    f(x|\theta) = I(\theta = 0) + I(\theta = 1) \frac{1}{2\sqrt{x}}, 0 < x < 1,
+    \]
+    its likelihood function is given by,
+    \[
+    L(\theta|\bx) = I(\theta = 0) + \prod_{i=1}^n I(\theta=1) \frac{1}{2\sqrt{x_i}} = I(\theta = 0) I(\theta=1) \frac{1}{\prod_{i=1^n} 2\sqrt{x_i}}.
+    \]
+
+    To maximize above likelihood, it is easy to show that, if $1 > \frac{1}{\prod_{i}^n 2 \sqrt{x_i}}$, $\hat \theta = 0$. Otherwise, if $1 < \frac{1}{\prod_{i}^n 2 \sqrt{x_i}}$, $\hat \theta = 1$.
+    \section*{Problem 3}
+    Given $X_1, \dotsc, X_n$ are random sample from a Double Exponential$(\mu, \sigma)$, the first two sample moments are,
+    \[
+    m_1 = \bar X, \qquad m_2 = \frac{1}{n} \sum_{i=1}^n X_i^2
+    \]
+    To get the MoM estimators, solve following equations,
+    \[
+    \bar X = \mu_1 = \mu, \qquad \frac{1}{n} \sum_{i=1}^n X_i^2 = \mu_2 =  \mu^2 + 2\sigma^2
+    \]
+    and we can get,
+    \begin{eqnarray*}
+    \tilde \mu = \bar X \\ 
+    \tilde \sigma = \sqrt{\frac{\frac{1}{n} \sum_i X_i^2 - \bar X^2}{2}} 
+    \end{eqnarray*}
+
+    \section*{7.14}
+    For $X$ and $Y$, which are independent random variables with pdf,
+    \[
+    f(x|\lambda) = \frac{1}{\lambda} e^{-x/\lambda}, x > 0, \qquad f(y|\mu) = \frac{1}{\mu} e^{-y/\mu}, y > 0,
+    \]
+    the joint pdf of $(X, Y)$ is,
+    \[
+    f(x, y|\lambda, \mu) = \frac{1}{\lambda} e^{-x/\lambda}\frac{1}{\mu} e^{-y/\mu}, x > 0, y > 0.
+    \]
+
+    For $(Z, W)$, if $W = 0, Z = Y, 0 < Y < X$,
+    \[
+    F(Z, W) = P(Z \le z, W = 0) = P(X \le z, W=0) = \int_0^z \int_x^\infty \frac{1}{\lambda} e^{-x/\lambda}\frac{1}{\mu} e^{-y/\mu} dy dx = \frac{\lambda}{\lambda + \mu} (1-e^{-\frac{\mu+\lambda}{\mu\lambda} z}), \quad z > 0.
+    \]
+    Otherwise, if $W = 1, Z = X, 0 < X < Y$,
+    \[
+    F(Z, W) = P(Z \le z, W = 1) = P(Y \le z, W=1) = \int_0^z \int_y^\infty \frac{1}{\lambda} e^{-x/\lambda}\frac{1}{\mu} e^{-y/\mu} dx dy = \frac{\mu}{\lambda + \mu} (1-e^{-\frac{\mu+\lambda}{\mu\lambda} z}), \quad z > 0.
+    \]
+
+    From above cdfs, we can obtain the joint pdf $f(z, w|\lambda, \mu)$, which is given by,
+    \begin{eqnarray*}
+    f(z, w|\lambda, \mu) = I(w = 0) \frac{1}{\mu} e^{-\frac{\lambda+\mu}{\lambda \mu} z} + I(w = 1)\frac{1}{\lambda} e^{-\frac{\lambda+\mu}{\lambda \mu} z} \\
+    = \left(\frac{1-w}{\mu} + \frac{w}{\lambda}\right) e^{-\frac{\lambda+\mu}{\lambda \mu} z} = \frac{1}{\mu^{1-w}} \frac{1}{\lambda^w} e^{-\frac{\lambda+\mu}{\lambda \mu} z} 
+    \end{eqnarray*}
+
+    Then, for $n$ iid sample $(Z_i, W_i)$, the likelihood function is given by,
+    \begin{eqnarray*}
+    L(\lambda, \mu|\mathbf{z, w}) = \prod_{i}^n f(z_i, w_i|\lambda, mu) \\
+    = \mu^{\sum_i w_i-n} \lambda^{-\sum_i w_i} e^{-\frac{\lambda + \mu}{\lambda \mu} \sum_i z_i}.
+    \end{eqnarray*}
+    And the log-likelihood function is,
+    \[
+    l(\lambda, \mu|\mathbf{z, w}) = \left(\sum_i w_i - n\right) \log \mu - \left(\sum_i w_i\right) \log \lambda - \frac{\lambda + \mu}{\lambda \mu} \sum_i z_i.
+    \]
+
+    Take paritial deriviative with regard to $\mu$ and $\lambda$ respectively, and set the derivative to zero, 
+    \begin{eqnarray*}
+        \frac{\partial l(\lambda, \mu|\mathbf{z, w})}{\partial \mu} = \frac{\sum_i w_i - n}{\mu} + \frac{\sum_i z_i}{\mu^2} = 0 \\
+        \frac{\partial l(\lambda, \mu|\mathbf{z, w})}{\partial \lambda} = \frac{-\sum_i w_i}{\lambda} + \frac{\sum_i z_i}{\lambda^2} = 0 \\
+    \end{eqnarray*}
+    we can find the MLE for $\mu$ and $\lambda$, given by,
+    \[
+    \hat \mu = \frac{\sum_i z_i}{n - \sum_i w_i} \qquad
+    \hat \lambda = \frac{\sum_i z_i}{\sum_i w_i}.
+    \]
+
+    To verify that above MLEs indeed maximizes the log-likelihood, compute the second-order derivatives as,
+    \begin{eqnarray*}
+        \frac{\partial^2 }{\partial \mu^2} l(\lambda, \mu|\mathbf{z, w}) = \frac{n-\sum_i w_i}{\mu^2} - \frac{2 \sum_i z_i}{\mu^3} \\ 
+        \frac{\partial^2 }{\partial \lambda^2} l(\lambda, \mu|\mathbf{z, w}) = \frac{\sum_i w_i}{\lambda^2} - \frac{2\sum_i z_i}{\lambda^3} \\
+        \frac{\partial^2 }{\partial \lambda \partial \mu} l(\lambda, \mu|\mathbf{z, w}) = 0,
+    \end{eqnarray*}
+    which has,
+    \[
+    \left. \frac{\partial^2 }{\partial \mu^2} l(\lambda, \mu|\mathbf{z, w}) \right|_{\mu = \frac{\sum_i z_i}{n-\sum_i w_i}} = -\frac{(n-\sum_i w_i)^3}{(\sum_i z_i)^2} < 0.
+    \]
+
+    Also, the Jacobian is,
+    \[
+    J = \begin{vmatrix}
+\frac{n-\sum_i w_i}{\mu^2} - \frac{2 \sum_i z_i}{\mu^3} & 0 \\
+0 & \frac{\sum_i w_i}{\lambda^2} - \frac{2\sum_i z_i}{\lambda^3}  
+    \end{vmatrix}_{\mu = \frac{\sum_i z_i}{n-\sum_i w_i}, \lambda=\frac{\sum_i z_i}{\sum_i w_i}} = \frac{(\sum_i w_i)^3 (n-\sum_i w_i)^3}{(\sum_i z_i)^4} > 0.
+    \]
+
+    Hence, $\hat \mu, \hat \lambda$ above are verified as the MLE for $f(z, w|\mu, \lambda)$.
+
+    \section*{7.15(a)}
+    Given the pdf $f(x|\mu, \lambda)$, and a random sample $X_1, \dotsc, X_n$, the likelihood function is given by,
+    \[
+    L(\mu, \lambda|\bx) = \left(\frac{\lambda}{2\pi}\right)^{n/2} \left(\prod_{i} x_i\right)^{-3/2} \exp \left\{-\frac{\lambda}{2\mu^2} \sum_i \frac{(x_i - \mu)^2}{x_i}\right\}.
+    \]
+    Correspondingly, the log-likelihood is,
+    \[
+    l(\mu, \lambda|\bx) = \frac{n}{2} (\log \lambda - \log 2\pi) -\frac{3}{2} \sum_i \log x_i - \frac{\lambda}{2} \sum_i \frac{(x_i - \mu)^2}{x_i \mu^2}
+    \]
+    To maximize above likelihood with regard to $\mu$ by fixing $\lambda$ is equivalent to minimize the sum
+    \[
+    \sum_i \frac{(x_i - \mu)^2}{x_i \mu}.
+    \]
+
+    So, set derivative of above sum with regard to $\mu$ to zero,
+    \begin{eqnarray*}
+    \frac{d}{d\mu} \sum_i \frac{(x_i - \mu)^2}{\mu^2 x_i} = \frac{d}{\mu} \sum_i \frac{(\frac{x_i}{\mu} - 1)^2}{x_i} \\
+    = - \sum_i \frac{2(\frac{x_i}{\mu} - 1)}{x_i} \frac{x_i}{\mu^2} = - \sum_i \frac{2(\frac{x_i}{\mu} - 1)}{\mu^2} = 0 \\
+    \implies \sum_i (\frac{x_i}{\mu} - 1) = 0 \\
+    \implies \hat \mu = \bar X
+    \end{eqnarray*}
+
+    To find $\hat \lambda$ that maximizes above log-likelihood, 
+    \begin{eqnarray*}
+    \left. \frac{d}{d\lambda} l(\mu, \lambda|\bx) \right|_{\mu = \bar x} =
+    \frac{n}{2} \frac{1}{\lambda} -\frac{1}{2 \bar x^2} \sum_i \frac{(x_i-\bar x)^2}{x_i} = 0 \\
+    \implies \lambda = \frac{n \bar x^2}{\sum_i \frac{(x_i - \bar x)^2}{x_i}} \\
+    = n \frac{\bar x^2}{\sum_i x_i - 2n \bar x + \bar x^2 \sum_i \frac{1}{x_i}} = n \frac{\bar x^2}{\bar x^2 \sum_i \frac{1}{x_i} - n \bar x} \\
+    = \frac{n}{\sum_i \frac{1}{x_i} - n \frac{1}{\bar x}} = \frac{n}{\sum_i \left(\frac{1}{x_i} - \frac{1}{\bar x}\right)}
+    \end{eqnarray*}
+    \emph{i.e.} $\hat \lambda = \cfrac{n}{\sum_i \left(\frac{1}{X_i} - \frac{1}{\bar X}\right)}$.
+
+\end{document}

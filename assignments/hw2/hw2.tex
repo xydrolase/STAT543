@@ -16,6 +16,59 @@
 \newcommand{\TX}{\mathbf{T(X)}}
 
 \begin{document}
+    \section*{6.10}
+    For a random sample $X_1, \dots, X_n \stackrel{iid}{\sim} Unif(\theta, \theta+1)$, using the result of Example 6.2.15, the minimal sufficient statistic is given by,
+    \[
+    \TX = (X_{(1)}, X_{(n)}).
+    \]
+
+    From Example 6.2.17, we know that $R = X_{(n)} - X_{(1})$ is independent of $\theta$, and the distribution for $X_{(n)} - X_{(1)}$ is,
+    \[
+    f(r|\theta) = n(n-1)r^{n-2}(1-r),
+    \]
+    which is a Beta$(n-1, 2)$ distribution with $E(R) = \frac{n-1}{n+1}$. 
+
+    Then, if we define function of the minimal statistic $g(X_{(1)}, X_{(n)}) = X_{(n)} - X_{(1)} - \frac{n-1}{n+1}$, 
+    we can see that,
+    \[
+    Eg(X_{(1)}, X_{(n)}) = E(X_{(n)} - X_{(1)} - \frac{n-1}{n+1}) = 0.
+    \]
+    But $P(g(X_{(1)}, X_{(n)}) = 0)$ doesn't equal 1. Hence, $\TX = (X_{(1)}, X_{(n)})$ is not complete.
+
+    \section*{6.13}
+    Given pdf $f(x|\alpha) = \alpha x^{\alpha-1} e^{-x^\alpha}$,
+    if we choose a statistic $T = \log(x)$, $g^{-1}(t) = e^t$, and $\frac{d}{dt} g^{-1}(t) = e^t$, then the pdf for $T$ is,
+    \[
+    f(t|\alpha) = \alpha e^{t(\alpha-1)} e^{-e^{\alpha t}} e^t = \alpha e^{\alpha t} e^{-e^{\alpha t}}.
+    \]
+    Then $f(t|\alpha)$ is a scale-family with scale parameter $\alpha$. Now let $T = \alpha Z$, where $f(z|1)$ is independent of $\alpha$. 
+    \[
+    \frac{\log(X_1)}{\log(X_2)} = \frac{T_1}{T_2} = \frac{\alpha Z_1}{\alpha Z_2} = \frac{Z_1}{Z_2}.
+    \]
+
+    Obviously, the ratio $Z_1/Z_2$ is independent of $\alpha$, and thus an ancillary statistic.
+
+    \section*{6.15}
+    \begin{enumerate}[(a)]
+    \item The parameter space $(\theta, \theta^2)$, if $a = 1$ represents a parabola in $\mathbb{R}^2$ space. Thus, it is not an open set in $\mathbb{R}^2$.
+    \item The joint pdf of $X_1, \dots, X_n$ is,
+    \begin{eqnarray*}
+    f(\bx|\theta, \theta^2) = \left(\frac{1}{\sqrt{2\pi} \theta}\right)^n \exp\left(-\frac{\sum_{i=1}^n (x_i-\theta)^2}{2\theta^2}\right) \\
+    = \left(\frac{1}{\sqrt{2\pi} \theta}\right)^n \exp\left(-\frac{\sum_{i=1}^n (x_i- \bar x + \bar x - \theta)^2}{2\theta^2}\right) \\
+    = \left(\frac{1}{\sqrt{2\pi} \theta}\right)^n \exp\left(-\frac{\sum_{i=1}^n\left[ (x_i- \bar x)^2 + (\bar x - \theta)^2 \right]}{2\theta^2}\right) \quad (\text{cross term is zero}) \\
+    = \left(\frac{1}{\sqrt{2\pi} \theta}\right)^n \exp\left(-\frac{(n-1)S^2 + n(\bar x - \theta)^2}{2\theta^2}\right) 
+    \end{eqnarray*}
+    We can see that $f(\bx|\theta)$ factorize into a function $g(\TX|\theta)$ and a constant, \emph{i.e.} $f(\bx|\theta)$ depends on $\theta$ only through $\TX = (S^2, \bar X)$. So $(\bar X, S^2)$ is sufficient.
+
+    Since $E(\bar X) = \theta, E(\bar X^2) = Var(\bar X) + E^2(\bar X) = \frac{\theta^2}{n} + \theta^2, E(S^2) = \theta^2$, 
+    define function $g(x_1, x_2) = \frac{n}{n+1} x_1^2 - x_2$, then,
+    \[
+    Eg(\bar X, S^2) = E(\frac{n}{n+1} \bar X^2 - S^2) = \frac{n}{n+1} E(\bar X^2) - E(S^2) = 0.
+    \]
+
+    However, $g(\bar X, S^2) = \frac{n}{n+1} \bar X^2 - S^2$ is not necessarily zero. Hence, $T = (\bar X, S^2)$ is not complete.
+
+    \end{enumerate}
     \section*{6.19}
     For a distribution family to be complete, if must satisfy that $E_\theta(g(X)) = 0 \implies g(X) \equiv 0$ for all $\theta$.
     \begin{enumerate}[(a)]
@@ -51,7 +104,7 @@
     is a complete sufficient statisitic.
 
     \section*{6.21}
-    \begin{enumerate}
+    \begin{enumerate}[(a)]
     \item Since $X$ is the single observation, $X$ itself, as a statistic, is the complete data. Therefore, $X$ is sufficient.
     Now, if
     \[
@@ -73,7 +126,7 @@
     Therefore, yes, $f(x|\theta)$ belongs to the exponential family.
     \end{enumerate}
     \section*{6.22}
-    \begin{enumerate}
+    \begin{enumerate}[(a)]
     \item Since $X_1, \dots, X_n$ is a random sample from $f(x|\theta)$, the joint pdf is, 
     \[
     f(\bx|\theta) = \theta^n \left(\prod_{i=1}^n x_i\right)^{\theta -1},
@@ -97,5 +150,39 @@
     \end{enumerate}
 
     \section*{6.24}
+    If $E(g(X)) = 0$ for all $\lambda$,
+    \[
+    E(g(X)) = \sum_{x=0}^\infty g(x) \frac{\lambda^x e^{-\lambda}}{x!} = 0, \quad \lambda = 0, 1
+    \]
+    For $\lambda = 0$, $E(g(X)) \equiv 0$.  For $\lambda = 1$, 
+    \[
+    E(g(X)) = e^{-1} \sum_{x=1}^\infty \frac{g(x)}{x!} = 0 \implies \sum_{x=1}^\infty \frac{g(x)}{x!} = 0.
+    \]
+    We can see that $g(X)$ is not necessarily $0$ by choosing $g(0) = 0, g(1) = 1, g(2) = -2$ and $g(x) = 0$ for $x > 2$. Therefore,
+    this family of distributions is not complete.
+
+    \section*{Problem 9}
+    If $X_1, \dots, X_n \stackrel{iid}{\sim} Gamma(\alpha, \beta)$, we have that,
+    \begin{eqnarray*}
+    f(x|\alpha, \beta) = \frac{1}{\Gamma(\alpha)\beta^\alpha} x^{\alpha-1} e^{-x/\beta} \\
+    = \frac{1}{\Gamma(\alpha)\beta^\alpha} \exp\left\{\log(x) (\alpha-1) - \frac{x}{\beta}\right\},
+    \end{eqnarray*}
+    has the form 
+    \begin{eqnarray*}
+    h(x) = 1, c(\boldsymbol{\theta}) = \frac{1}{\Gamma(\alpha) \beta^\alpha}, \\
+    w_1(\boldsymbol{\theta}) = \alpha - 1, t_1(x) = \log(x), \\
+    w_2(\boldsymbol{\theta}) = \frac{1}{\beta}, t_2(x) = x. \\
+    \end{eqnarray*}
+    Therefore $f(x|\alpha, \beta)$ belongs to the exponential class. By Theorem 6.2.25, 
+    \[
+    \TX = \left(\sum_{i=1}^n \log(X_i), \sum_{i=1}^n X_i \right)
+    \]
+    is a complete sufficient statistic for $(\alpha, \beta)$. 
+
+    Now, define a function $g(x_1, x_2) = (e^{x_1}, x_2)$, we can see that,
+    \[
+    T'(\bX) = g(\TX) = \left( e^{\log\left(\prod_{i=1}^n X_i\right)}, \sum_{i=1}^n X_i \right) = \left(\prod_{i=1}^n X_i, \sum_{i=1}^n X_i \right),
+    \]
+    is also a complete sufficient statisic for $(\alpha, \beta)$.
 
 \end{document}
